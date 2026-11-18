@@ -20,6 +20,11 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".AudioCaptureService"
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection" />
+
         <receiver
             android:name=".MusicWidgetProvider"
             android:exported="true">
