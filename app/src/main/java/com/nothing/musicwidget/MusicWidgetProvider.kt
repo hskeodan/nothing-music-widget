@@ -1,8 +1,10 @@
 
 package com.nothing.musicwidget
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +16,7 @@ import android.widget.TextView
 class MainActivity : Activity() {
 
     private val captureRequest = 1001
+    private val audioPermissionRequest = 1002
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +49,7 @@ class MainActivity : Activity() {
         val startButton = Button(this).apply {
             text = "START VISUALIZER"
             setOnClickListener {
-                requestAudioCapture()
+                checkAudioPermission()
             }
         }
 
@@ -67,7 +70,39 @@ class MainActivity : Activity() {
         setContentView(root)
     }
 
-    private fun requestAudioCapture() {
+    private fun checkAudioPermission() {
+        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                audioPermissionRequest
+            )
+        } else {
+            requestCapturePermission()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(
+            requestCode,
+            permissions,
+            grantResults
+        )
+
+        if (requestCode == audioPermissionRequest &&
+            grantResults.isNotEmpty() &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED
+        ) {
+            requestCapturePermission()
+        }
+    }
+
+    private fun requestCapturePermission() {
         val manager = getSystemService(MEDIA_PROJECTION_SERVICE)
             as MediaProjectionManager
 
