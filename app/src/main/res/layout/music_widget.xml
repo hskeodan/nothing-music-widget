@@ -20,14 +20,14 @@
             android:text="nothing(R)"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MUSIC"
             android:textColor="#888888"
-            android:textSize="10sp" />
+            android:textSize="10sp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -36,19 +36,18 @@
         android:layout_weight="1"
         android:orientation="horizontal"
         android:gravity="center"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:padding="4dp">
 
-        <View android:layout_width="5dp" android:layout_height="22dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
-        <View android:layout_width="5dp" android:layout_height="38dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
-        <View android:layout_width="5dp" android:layout_height="52dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
-        <View android:layout_width="5dp" android:layout_height="30dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
-        <View android:layout_width="5dp" android:layout_height="60dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
-        <View android:layout_width="5dp" android:layout_height="42dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
-        <View android:layout_width="5dp" android:layout_height="55dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
-        <View android:layout_width="5dp" android:layout_height="25dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
-        <View android:layout_width="5dp" android:layout_height="48dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
-        <View android:layout_width="5dp" android:layout_height="35dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
+        <TextView android:layout_width="5dp" android:layout_height="22dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
+        <TextView android:layout_width="5dp" android:layout_height="38dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
+        <TextView android:layout_width="5dp" android:layout_height="52dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
+        <TextView android:layout_width="5dp" android:layout_height="30dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
+        <TextView android:layout_width="5dp" android:layout_height="60dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
+        <TextView android:layout_width="5dp" android:layout_height="42dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
+        <TextView android:layout_width="5dp" android:layout_height="55dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
+        <TextView android:layout_width="5dp" android:layout_height="25dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
+        <TextView android:layout_width="5dp" android:layout_height="48dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
+        <TextView android:layout_width="5dp" android:layout_height="35dp" android:background="#FFFFFF" android:layout_margin="3dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -63,7 +62,7 @@
             android:text="VK X"
             android:textColor="#FF3030"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,7 +70,6 @@
             android:layout_marginStart="16dp"
             android:text="● LIVE"
             android:textColor="#FF3030"
-            android:textSize="11sp" />
+            android:textSize="11sp"/>
     </LinearLayout>
-
 </LinearLayout>
