@@ -1,70 +1,107 @@
 
 package com.nothing.musicwidget
 
-import android.appwidget.AppWidgetManager
-import android.appwidget.AppWidgetProvider
-import android.content.ComponentName
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
+import android.media.projection.MediaProjectionManager
 import android.os.Build
-import android.widget.RemoteViews
+import android.os.Bundle
+import android.view.Gravity
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 
-class MusicWidgetProvider : AppWidgetProvider() {
+class MainActivity : Activity() {
 
-    companion object {
-        const val ACTION_LEVEL = "com.nothing.musicwidget.AUDIO_LEVEL"
-        const val EXTRA_LEVEL = "audio_level"
+    private val captureRequest = 1001
 
-        private val BAR_IDS = intArrayOf(
-            R.id.bar1, R.id.bar2, R.id.bar3, R.id.bar4,
-            R.id.bar5, R.id.bar6, R.id.bar7, R.id.bar8,
-            R.id.bar9, R.id.bar10, R.id.bar11, R.id.bar12
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        window.statusBarColor = android.graphics.Color.BLACK
+        window.navigationBarColor = android.graphics.Color.BLACK
+
+        val root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER
+            setPadding(32, 32, 32, 32)
+            setBackgroundColor(android.graphics.Color.BLACK)
+        }
+
+        val title = TextView(this).apply {
+            text = "nothing(R)"
+            textSize = 30f
+            setTextColor(android.graphics.Color.WHITE)
+            gravity = Gravity.CENTER
+        }
+
+        val status = TextView(this).apply {
+            text = "VK X  •  🔴 LIVE"
+            textSize = 16f
+            setTextColor(android.graphics.Color.RED)
+            gravity = Gravity.CENTER
+            setPadding(0, 24, 0, 32)
+        }
+
+        val startButton = Button(this).apply {
+            text = "START VISUALIZER"
+            setOnClickListener {
+                requestAudioCapture()
+            }
+        }
+
+        val stopButton = Button(this).apply {
+            text = "STOP VISUALIZER"
+            setOnClickListener {
+                stopService(
+                    Intent(this@MainActivity, AudioCaptureService::class.java)
+                )
+            }
+        }
+
+        root.addView(title)
+        root.addView(status)
+        root.addView(startButton)
+        root.addView(stopButton)
+
+        setContentView(root)
+    }
+
+    private fun requestAudioCapture() {
+        val manager = getSystemService(MEDIA_PROJECTION_SERVICE)
+            as MediaProjectionManager
+
+        startActivityForResult(
+            manager.createScreenCaptureIntent(),
+            captureRequest
         )
     }
 
-    override fun onUpdate(
-        context: Context,
-        manager: AppWidgetManager,
-        ids: IntArray
+    @Deprecated("Legacy result callback")
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
     ) {
-        for (id in ids) {
-            val views = RemoteViews(context.packageName, R.layout.music_widget)
-            manager.updateAppWidget(id, views)
-        }
-    }
+        super.onActivityResult(requestCode, resultCode, data)
 
-    override fun onReceive(context: Context, intent: Intent) {
-        super.onReceive(context, intent)
-
-        if (intent.action != ACTION_LEVEL) return
-
-        val level = intent.getIntExtra(EXTRA_LEVEL, 0)
-        val manager = AppWidgetManager.getInstance(context)
-        val component = ComponentName(context, MusicWidgetProvider::class.java)
-        val ids = manager.getAppWidgetIds(component)
-
-        for (id in ids) {
-            val views = RemoteViews(context.packageName, R.layout.music_widget)
-
-            views.setTextViewText(
-                R.id.audio_level,
-                "LIVE  •  $level%"
-            )
-
-            for ((index, barId) in BAR_IDS.withIndex()) {
-                val wave = (index * 7 + level * (index % 4 + 2)) % 100
-                val height = (8 + wave * 0.55f).coerceIn(8f, 64f)
-
-                if (Build.VERSION.SDK_INT >= 31) {
-                    views.setViewLayoutHeight(
-                        barId,
-                        height,
-                        0
-                    )
-                }
+        if (requestCode == captureRequest &&
+            resultCode == RESULT_OK &&
+            data != null
+        ) {
+            val serviceIntent = Intent(
+                this,
+                AudioCaptureService::class.java
+            ).apply {
+                putExtra(AudioCaptureService.EXTRA_RESULT_CODE, resultCode)
+                putExtra(AudioCaptureService.EXTRA_DATA, data)
             }
 
-            manager.updateAppWidget(id, views)
+            if (Build.VERSION.SDK_INT >= 26) {
+                startForegroundService(serviceIntent)
+            } else {
+                startService(serviceIntent)
+            }
         }
     }
 }
