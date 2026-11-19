@@ -36,7 +36,6 @@
             android:text="  ● LIVE"
             android:textColor="#FF3030"
             android:textSize="11sp" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -59,7 +58,6 @@
         <TextView android:id="@+id/bar10" style="@style/EqualizerBar" />
         <TextView android:id="@+id/bar11" style="@style/EqualizerBar" />
         <TextView android:id="@+id/bar12" style="@style/EqualizerBar" />
-
     </LinearLayout>
 
     <TextView
